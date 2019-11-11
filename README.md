@@ -1,5 +1,5 @@
 ---
-
+[![Build Status](https://travis-ci.com/BlackChaose/vuejs_tpl.svg?branch=master)](https://travis-ci.com/BlackChaose/vuejs_tpl)
 ---
 # blackchaose.vuejs_tpl
 
