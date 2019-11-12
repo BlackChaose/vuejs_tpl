@@ -10,4 +10,5 @@ asm2:
 	echo "\033[93m\n!!<< End of assembly >>!! \033[39m\n"
 lint: 
 	npm run lint
-
+devphp:
+	php -S localhost:5000
