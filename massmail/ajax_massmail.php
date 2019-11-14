@@ -12,5 +12,12 @@ echo json_encode($data);
 echo "====>";
 print_r($data);
 echo "</pre>";
-print_r(json_decode($_POST));
+print_r($_POST);
+
+if(!empty($_FILES)) {
+    require_once './FileUpload.php';
+
+    $ff = new FileUpload('attached_file');
+    $ff->upload_file();
+}
 ?>
