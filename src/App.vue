@@ -8,7 +8,7 @@
     <!--<CustomUploadFile label_mes="Прикрепить файлы" v-model="value"></CustomUploadFile>-->
     <!--<CustomTextArea label_mes="Запрос в БД для выбора адресатов"></CustomTextArea>-->
     <!--<custom-button v-bind:dataset="value" value = "отправить" ></custom-button>-->
-    <custom-send-mail label_mail_from="Адрес для ответа" label_message_text="текст сообщения" label_mail_theme="Тема сообщения" label_query_select="кастомный запрос" label_attach_file="прикрепить файл"></custom-send-mail>
+    <custom-send-mail value_button="Отправить" label_mail_from="Адрес для ответа" label_message_text="текст сообщения" label_mail_theme="Тема сообщения" label_query_select="кастомный запрос" label_attach_file="прикрепить файл"></custom-send-mail>
   </div>
 </template>
 
