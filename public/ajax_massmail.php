@@ -5,16 +5,25 @@ header("Application/json");
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-echo "in".__FILE__;
+if (!empty($data->query_data->dt->attach_file->fo)) {
+    $fl = $data->query_data->dt->attach_file->fo;
+    print_r($fl); die;
+    file_put_contents('./temp.file.jpg', $fl);
+}
+
+echo "in" . __FILE__;
 echo "<br>\n";
 echo "<pre>";
 echo json_encode($data);
-echo "====>";
+echo "/// ====>";
 print_r($data);
-echo "</pre>";
+echo "-///----------------------> ";
 print_r($_POST);
+echo "----files-----";
+print_R($_FILES);
+echo "</pre>";
 
-if(!empty($_FILES)) {
+if (!empty($_FILES)) {
     require_once './FileUpload.php';
 
     $ff = new FileUpload('attached_file');
