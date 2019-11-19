@@ -11,7 +11,7 @@
             <textarea id="message_text_id" name="message_text" rows="8" cols="55" v-model="message_text"></textarea>
             <br>
             <label for="input_attach_file" :bind="label_attach_file">{{ label_attach_file }} </label>
-            <input id="input_attach_file" type="file" name="attached_file" @change="previewFiles" multiple>
+            <input id="input_attach_file" type="file" name="attached_file" @change="addFiles" multiple>
             <br>
             <label for="query_select" :bind="label_query_select">{{ label_query_select }}</label>
             <textarea id="query_select" name="select_text" rows="8" cols="55" v-model="select_text"></textarea>
@@ -30,7 +30,7 @@
     props: ['dataset', 'label_mail_from', 'label_mail_theme', 'label_message_text', 'label_query_select', 'label_attach_file', 'value_button'],
     data: function () {
       return {
-        un_attach_file: null,
+        un_attach_file: [],
         mail_from: 'nik@0x4e494b.ru',
         mail_theme: 'questions',
         message_text: 'some text',
@@ -38,14 +38,36 @@
       };
     },
     methods: {
-      previewFiles: function (event) {
-        console.log(event.target.files);
+      addFiles: async function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        const inputFiles = document.getElementById('input_attach_file');
+        formData.append('title', 'attachments to the message');
+        for (let i=0; i < inputFiles.files.length; i++) {
+          formData.append('attachment', inputFiles.files[i]);
+        }
 
+
+        const response = await fetch('/massmail/ajax_massmail.php', {
+          method: 'post',
+          mode: 'same-origin',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          redirect: 'follow',
+          referrer: 'no-referrer',
+          body: formData,
+        });
+        try {
+          const json = await response.json();
+        }
+        catch  (error) {
+          console.log('There has been a problem with your fetch operation: ', error.message);
+        }
       },
       senddata: async function (e) {
         e.preventDefault();
         //this.un_attach_file = new FormData(document.getElementById('form_mailer_1'));
-        //fixme! not work!
+
         const inputFiles = document.getElementById('input_attach_file');
         const fileObject = inputFiles.files[0];
         console.log(fileObject);
@@ -56,7 +78,6 @@
             'name': fileObject.name,
             'size': fileObject.size,
             'type': fileObject.type,
-            'fo' : fileObject,
           };
           JSON.stringify(newObject);
           this.un_attach_file = newObject;
@@ -74,15 +95,12 @@
           referrer: 'no-referrer',
           body: JSON.stringify({
             'query_data': {
-              dt: {
                 attach_file: this.un_attach_file,
                 mail_f: this.mail_from,
                 mail_t: this.mail_theme,
                 message: this.message_text,
                 select: this.select_text,
-              },
-              message: 'req mes!'
-            }
+              }
           }),
         });
         const json = await response.json();

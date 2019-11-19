@@ -10,12 +10,14 @@ class FileUpload
 
     public function __construct($fNF, $td_path, $tf_name)
     {
-        $this->target_dir = (!empty($td_path)) ? $td_path : 'uploads/';
-        $this->target_file = (!empty($tf_name)) ? $tf_name : $this->target_dir . basename($_FILES["fileToUpload"]["name"]);
         $this->fileNameField = (!empty($fNF)) ? $fNF : 'fileToUpload';
+        $this->target_dir = (!empty($td_path)) ? $td_path : 'uploads/';
+        $this->target_file = (!empty($tf_name)) ? $tf_name : $this->target_dir . basename($_FILES[$this->fileNameField]["name"]);
+
     }
 
     //todo: get file type; get file size; set of validations;
+    //fixme: target_dir !!!
 
     public function upload_file()
     {
@@ -27,7 +29,7 @@ class FileUpload
                 throw(new Exception("Sorry, file already exists."));
 
             } else {
-                if (move_uploaded_file($_FILES[$this->fileNameField]["tmp_name"], $this->fileNameField)) {
+                if (move_uploaded_file($_FILES[$this->fileNameField]["tmp_name"], $_FILES[$this->fileNameField]["name"])) {
                     header('Content-type: application/json');
                     echo json_encode(["message" => "The file " . basename($_FILES[$this->fileNameField]["name"]) . " has been uploaded."]);
                     die;
